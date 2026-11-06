@@ -73,3 +73,16 @@ public enum TagIO {
         }
     }
 }
+
+extension TagIO {
+    /// Writes tags into an existing WAV, AIFF, FLAC or M4A file (other formats are written only while encoding).
+    public static func write(_ tags: AudioTags, includeArtwork: Bool = true, to url: URL) throws {
+        switch url.pathExtension.lowercased() {
+        case "wav", "wave": try ChunkTags.writeWAV(tags, includeArtwork: includeArtwork, to: url)
+        case "aif", "aiff", "aifc": try ChunkTags.writeAIFF(tags, includeArtwork: includeArtwork, to: url)
+        case "flac": try FLACTags.write(tags, includeArtwork: includeArtwork, to: url)
+        case "m4a", "m4b", "mp4": try MP4Tags.write(tags, includeArtwork: includeArtwork, to: url)
+        default: throw ConversionError.encoder("Recast can't add tags to .\(url.pathExtension) files after the fact.")
+        }
+    }
+}

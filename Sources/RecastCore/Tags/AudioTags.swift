@@ -130,7 +130,7 @@ public struct AudioTags: Equatable, Sendable {
     }
 
     /// The tags as Vorbis comment fields, in a stable order.
-    func vorbisFields() -> [(String, String)] {
+    public func vorbisFields() -> [(String, String)] {
         var fields: [(String, String)] = []
         for (name, path) in AudioTags.textFields { if let value = self[keyPath: path] { fields.append((name, value)) } }
         if let track { fields.append(("TRACKNUMBER", String(track))) }

@@ -237,35 +237,27 @@ enum MP4Tags {
         ilst.children = items(for: tags, includeArtwork: includeArtwork) + encoderItems
 
         let mdatOffset = boxes.first(where: { $0.type == "mdat" })?.offset ?? 0
-        let audioMoves = mdatOffset > moovEntry.offset
-        var newMoov = moov.serialized()
-        var growth = Int64(newMoov.count) - Int64(moovEntry.size)
-        let following = moovIndex + 1 < boxes.count ? boxes[moovIndex + 1] : nil
-        // Use the padding Core Audio leaves after moov when it is big enough, so the audio stays put.
-        if audioMoves, let free = following, free.type == "free", Int64(free.size) - growth >= 8 || Int64(free.size) == growth {
-            let remaining = Int64(free.size) - growth
-            var head = Data()
-            for box in boxes[..<moovIndex] { head.append(file.read(at: box.offset, count: Int(box.size))) }
-            head.append(newMoov)
-            if remaining >= 8 {
-                var writer = ByteWriter()
-                writer.u32be(UInt32(remaining))
-                writer.ascii("free")
-                head.append(writer.data)
-                head.append(Data(count: Int(remaining) - 8))
-            }
-            try replaceHead(of: url, keepingFrom: free.offset + free.size, with: head)
-            return
-        }
-        if audioMoves {
-            newMoov = moov.serialized(chunkOffsetDelta: growth)
-            growth = Int64(newMoov.count) - Int64(moovEntry.size)
-            newMoov = moov.serialized(chunkOffsetDelta: growth)
-        }
         var head = Data()
         for box in boxes[..<moovIndex] { head.append(file.read(at: box.offset, count: Int(box.size))) }
-        head.append(newMoov)
-        try replaceHead(of: url, keepingFrom: moovEntry.offset + moovEntry.size, with: head)
+        if mdatOffset > moovEntry.offset {
+            // The audio follows the movie box: rewrite moov and the padding after it, shifting chunk offsets by the
+            // change. Core Audio leaves about 60 KB of padding; 4 KB is plenty for later tag edits.
+            let following = moovIndex + 1 < boxes.count ? boxes[moovIndex + 1] : nil
+            let free = following?.type == "free" ? following : nil
+            let oldSpan = Int64(moovEntry.size + (free?.size ?? 0))
+            let padding: Int64 = 4096
+            let delta = Int64(moov.serialized().count) + padding - oldSpan
+            head.append(moov.serialized(chunkOffsetDelta: delta))
+            var writer = ByteWriter()
+            writer.u32be(UInt32(padding))
+            writer.ascii("free")
+            head.append(writer.data)
+            head.append(Data(count: Int(padding) - 8))
+            try replaceHead(of: url, keepingFrom: moovEntry.offset + UInt64(oldSpan), with: head)
+        } else {
+            head.append(moov.serialized())
+            try replaceHead(of: url, keepingFrom: moovEntry.offset + moovEntry.size, with: head)
+        }
     }
 
     static func shiftChunkOffsets(_ payload: Data, wide: Bool, by delta: Int64) -> Data {

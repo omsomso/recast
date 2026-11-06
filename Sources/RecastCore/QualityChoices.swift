@@ -91,7 +91,7 @@ extension ConversionSettings {
         case .aac:
             let profile = aacProfile == .he ? " HE-AAC" : ""
             switch aacMode {
-            case .vbr: return "Variable, quality \(aacVBRQuality)\(profile)"
+            case .vbr: return "Variable, \(Self.aacQualityName(aacVBRQuality))\(profile)"
             case .cbr: return "\(aacBitrate) kbps constant\(profile)"
             case .abr: return "Average \(aacBitrate) kbps\(profile)"
             case .constrainedVBR: return "\(aacBitrate) kbps\(profile)"
@@ -115,6 +115,16 @@ extension ConversionSettings {
         case .gain: parts.append(String(format: "%+.1f dB", gainDB))
         }
         return parts
+    }
+
+    /// Apple's 0–127 VBR quality in words.
+    public static func aacQualityName(_ quality: Int) -> String {
+        switch quality {
+        case 118...: return "highest quality"
+        case 91..<118: return "high quality"
+        case 64..<91: return "medium quality"
+        default: return "low quality"
+        }
     }
 
     public static func rateText(_ rate: Double) -> String {

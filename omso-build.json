@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "name": "Recast",
+  "notes": [
+    "Release build of Recast.app (ad-hoc signed), the engine tests, and a self-test that converts a generated, tagged file to every format and checks the results; then copies Recast.app into /Applications/omso.",
+    "Needs Xcode 26 or newer (macOS 26 SDK)."
+  ],
+  "products": [
+    {
+      "name": "Recast",
+      "configuration": "Release",
+      "steps": [
+        {"name": "Build", "run": ["/bin/sh", "{source}/build.sh"]},
+        {"name": "Test", "run": ["/bin/sh", "{source}/test.sh"], "env": {"TMPDIR": "{tmp}"}},
+        {"name": "Self-test", "run": ["{source}/build/Recast.app/Contents/MacOS/Recast", "--self-test", "{run}/self-test"]}
+      ],
+      "install": [
+        {"copy": "build/Recast.app", "to": "/Applications/omso"}
+      ]
+    }
+  ]
+}

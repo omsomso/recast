@@ -68,7 +68,10 @@ public enum AudioProbe {
         var fileType: AudioFileTypeID = 0
         var sourceDepth: Int32 = 0
         var bitRate: UInt32 = 0
+        var dataBytes: UInt64 = 0
         if let audioFile {
+            size = UInt32(MemoryLayout<UInt64>.size)
+            AudioFileGetProperty(audioFile, kAudioFilePropertyAudioDataByteCount, &size, &dataBytes)
             size = UInt32(MemoryLayout<AudioFileTypeID>.size)
             AudioFileGetProperty(audioFile, kAudioFilePropertyFileFormat, &size, &fileType)
             size = UInt32(MemoryLayout<Int32>.size)
@@ -94,8 +97,11 @@ public enum AudioProbe {
         }
         let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
         let fileSize = (attributes?[.size] as? NSNumber)?.int64Value ?? 0
+        // The stored (nominal) bit rate first, as players show it; else measured from the audio data.
+        let seconds = format.mSampleRate > 0 ? Double(frames) / format.mSampleRate : 0
         var rate = Int(bitRate)
-        if rate == 0, frames > 0, format.mSampleRate > 0 { rate = Int(Double(fileSize) * 8 / (Double(frames) / format.mSampleRate)) }
+        if rate == 0, dataBytes > 0, seconds > 0 { rate = Int(Double(dataBytes) * 8 / seconds) }
+        if rate == 0, seconds > 0 { rate = Int(Double(fileSize) * 8 / seconds) }
         return AudioFileInfo(formatName: formatName(id: id, fileType: fileType), sampleRate: format.mSampleRate,
                              channels: Int(format.mChannelsPerFrame), bitDepth: bitDepth, isFloat: isFloat, isLossless: lossless,
                              frames: frames, bitRate: rate, fileSize: fileSize)
