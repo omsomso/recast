@@ -4,8 +4,9 @@
   Tools alone are not enough.
 - omso Builder builds this repository from `omso-build.json` (build, tests, `--self-test`, copy into
   `/Applications/omso`). Keep that file working when build or test commands change.
-- Git is local only for now (no remote). Commit validated work; create a remote, push or install only when the
-  user asks. VSTS's install and push permissions don't apply here.
+- The remote is the private GitHub repository `omsomso/recast` (`origin`); `main` is the working branch.
+  Commit validated work; push or install only when the user asks. VSTS's install and push permissions don't
+  apply here.
 - Conversions never write over an original: encode to a hidden temporary file, then move it into place. Keep
   `OutputPlanner` treating every input of a batch as taken.
 - Report anything a conversion changes beyond the requested format (forced resampling, mixdown, clipping, level
