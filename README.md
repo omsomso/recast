@@ -16,6 +16,12 @@ A macOS app (SwiftUI, Liquid Glass) for converting audio files. Drop files or wh
   file next to its destination and is moved into place when finished; a name that would replace an original
   or another file in the batch gets a number ("Song 2.mp3").
 
+Recast's own code is open source under the GNU General Public License, version 3 or later (`LICENSE`).
+Copyright (C) 2026 omso. The bundled encoders keep their own licences: LAME 3.100 is under the GNU LGPL
+version 2 (`Sources/CLame/COPYING`), and libogg and libvorbis are under Xiph.Org's BSD-style licence
+(`Sources/COggVorbis/libvorbis-1.3.7/COPYING`). See Known limits for what the LGPL asks before a built app
+is shared.
+
 ## Formats
 
 | Format | Written by | Options | Tags written |

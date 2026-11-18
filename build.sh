@@ -32,7 +32,7 @@ cat > "$app/Contents/Info.plist" <<PLIST
   <key>LSMinimumSystemVersion</key><string>26.0</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.music</string>
   <key>NSHighResolutionCapable</key><true/>
-  <key>NSHumanReadableCopyright</key><string>Recast by omso. MP3 encoding: LAME 3.100 (LGPL). Ogg Vorbis: libvorbis 1.3.7 (BSD).</string>
+  <key>NSHumanReadableCopyright</key><string>Recast by omso. GNU GPL v3 or later. MP3 encoding: LAME 3.100 (LGPL). Ogg Vorbis: libvorbis 1.3.7 (BSD).</string>
   <key>CFBundleDocumentTypes</key>
   <array>
     <dict>
