@@ -3,7 +3,7 @@
   "files": {
     ".agent-config/render.py": "72168bdba8a841e17e7af3f43cb12bf3902242cd6091d40ca7cafe6f77a47562",
     ".agent-config/shared.json": "44807f1c955e9f8a508c13be6e87175a217f6c8a00de82ea0bd1c83ddbb18c05",
-    "AGENTS.md": "2820d3df85ee97c7f1f5f4e8e9af32054711a54d82d553e4c7b4780832bb1abb",
-    "CLAUDE.md": "2820d3df85ee97c7f1f5f4e8e9af32054711a54d82d553e4c7b4780832bb1abb"
+    "AGENTS.md": "9d1ab4a64f773fa03162789829cb6793d33791f85ffa8d46efbfa01c50361f99",
+    "CLAUDE.md": "9d1ab4a64f773fa03162789829cb6793d33791f85ffa8d46efbfa01c50361f99"
   }
 }

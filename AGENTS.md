@@ -91,7 +91,7 @@ These rules apply when working in a Git repository, including non-software work.
   Tools alone are not enough.
 - omso Builder builds this repository from `omso-build.json` (build, tests, `--self-test`, copy into
   `/Applications/omso`). Keep that file working when build or test commands change.
-- The remote is the private GitHub repository `omsomso/recast` (`origin`); `main` is the working branch.
+- The remote is the GitHub repository `omsomso/recast` (`origin`); `main` is the working branch.
   Commit validated work; push or install only when the user asks. VSTS's install and push permissions don't
   apply here.
 - Conversions never write over an original: encode to a hidden temporary file, then move it into place. Keep
