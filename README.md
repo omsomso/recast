@@ -16,11 +16,18 @@ A macOS app (SwiftUI, Liquid Glass) for converting audio files. Drop files or wh
   file next to its destination and is moved into place when finished; a name that would replace an original
   or another file in the batch gets a number ("Song 2.mp3").
 
-![Recast with five files and the settings panel open](docs/screenshots/settings.png)
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/settings.png">
+  <img src="docs/screenshots/settings-dark.png" alt="Recast with five files and the settings panel open">
+</picture>
 
-<img src="docs/screenshots/converted.png" alt="Five files converted to MP3" width="72%">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/converted.png">
+  <img src="docs/screenshots/converted-dark.png" alt="Five files converted to MP3" width="72%">
+</picture>
 
-*Screenshots made with Recast's snapshot mode and generated test tones (see Tests).*
+*Screenshots made with Recast's snapshot mode and generated test tones (see Tests); GitHub shows the light or dark
+set to match your theme.*
 
 Recast's own code is open source under the GNU General Public License, version 3 or later (`LICENSE`).
 Copyright (C) 2026 omso. The bundled encoders keep their own licences: LAME 3.100 is under the GNU LGPL

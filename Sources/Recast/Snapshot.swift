@@ -43,6 +43,10 @@ enum Snapshot {
             model.settings.folderPath = folder.appendingPathComponent("converted").path
             try? await Task.sleep(for: .milliseconds(600))
             capture(folder, "4-settings-flac")
+            NSApp.appearance = NSAppearance(named: .darkAqua)
+            try? await Task.sleep(for: .milliseconds(600))
+            capture(folder, "4-settings-flac-dark")
+            NSApp.appearance = NSAppearance(named: .aqua)
             model.settings.format = .aac
             model.settings.aacMode = .vbr
             model.settings.volume = .peak
